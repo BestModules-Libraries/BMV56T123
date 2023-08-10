@@ -1,0 +1,25 @@
+##############################################
+# Coloring Map For （ ）
+##############################################
+##############################################
+# Classes and Objects (KEYWORD1)
+##############################################
+BMV56T123	KEYWORD1
+##############################################
+# Methods and Functions (KEYWORD2)
+##############################################
+begin	KEYWORD2
+setPlayMode	KEYWORD2
+setTimbreGroup	KEYWORD2
+setVolume	KEYWORD2
+playVoice	KEYWORD2
+openLED	KEYWORD2
+closeLED	KEYWORD2
+getTouchValue	KEYWORD2
+getINT	KEYWORD2
+##############################################
+# Constants (LITERAL1)
+##############################################
+INTERNAL_SOUND_SOURCE	LITERAL1
+EXTERNAL_SOUND_SOURCE	LITERAL1
+
