@@ -1,23 +1,19 @@
 /*************************************************
-File:       		BMV56T123.cpp
-Author:            	Tree, BESTMODULE
-Description:         BMV56T123 function
-History：			
-	V1.0	 -- initial version；2023-01-05；Arduino IDE : ≥v1.8.13
-
+File:          BMV56T123.cpp
+Author:        BEST MODULES CORP.
+Description:   UART communication with the BMV56T123 and obtain the corresponding value 
+Version:       V1.0.2   -- 2024-11-15
 **************************************************/
 #include "BMV56T123.h"
 
 /***************************************************************************************
 Description:    Constructor
 parameter:
-    Input: 
-		intPin：Interruption occurs when there are touch keys
-		rxPin: simulate serial port data receive   
-		txPin: simulate serial port data send
-    Output:         
-Return:         
-Others:     
+		      intPin：Interruption occurs when there are touch keys
+		      rxPin: simulate serial port data receive   
+		      txPin: simulate serial port data send       
+Return:   None      
+Others:   None  
 ***************************************************************************************/
 BMV56T123::BMV56T123(uint8_t intPin, uint8_t rxPin, uint8_t txPin)
 {
@@ -25,13 +21,12 @@ BMV56T123::BMV56T123(uint8_t intPin, uint8_t rxPin, uint8_t txPin)
     _rxPin = rxPin;
     _txPin = txPin;	
 }
+
 /*************************************************
-Description:    BMV56T123 initial
-parameter:
-    Input:          
-    Output:         
-Return:         
-Others: 
+Description: BMV56T123 initial
+parameter:   void       
+Return:      void     
+Others:      None
 *************************************************/
 void BMV56T123::begin(void)
 {
@@ -40,12 +35,16 @@ void BMV56T123::begin(void)
     _softSerial->begin(BAUDRATE); 
 	delay(200);
 }
+
 /*************************************************
-Description:Set play mode
-Parameters:
-	mode:set play the DIY voice or MIDI voice(In-chip audio source) 
-Return: 
-Others: 
+Description: Set play mode
+Parameters:  mode: Sound source selection 
+               0x00: Built-in MIDI audio source
+               0x01: Custom audio source  
+Return:      Implementation status
+               true: Executed successfully
+               false: Execution failure
+Others:      None
 *************************************************/
 bool BMV56T123::setPlayMode(uint8_t mode)
 {
@@ -64,12 +63,14 @@ bool BMV56T123::setPlayMode(uint8_t mode)
 		return false;
 	}
 }
+
 /*************************************************
-Description:Set voice groups
-Parameters:
-	group:0~12，default 0
-Return: 
-Others: 
+Description: Set voice groups
+Parameters:  group: Timbre group selection, Radius: 0~12(default 0) 
+Return:      Implementation status
+               true: Executed successfully
+               false: Execution failure
+Others:      None
 *************************************************/
 bool BMV56T123::setTimbreGroup(uint8_t group)
 {
@@ -88,12 +89,14 @@ bool BMV56T123::setTimbreGroup(uint8_t group)
 		return false;
 	}	
 }
+
 /*************************************************
-Description:Volume Setting
-Parameters:
-	volume:0~15,max is 15,0 is Mute
-Return: 
-Others: 
+Description: Volume Setting
+Parameters:  volume: Set volume, Radius: 0~15(default 0) 
+Return:      Implementation status
+               true: Executed successfully
+               false: Execution failure
+Others:      None
 *************************************************/
 bool BMV56T123::setVolume(uint8_t volume)
 {
@@ -113,12 +116,14 @@ bool BMV56T123::setVolume(uint8_t volume)
 		return false;
 	}	
 }
+
 /*************************************************
-Description:sound playback
-Parameters:
-	led_number:The sound of touch keys Number
-Return: 
-Others: 
+Description: sound playback
+Parameters:  voice_number: Touch detection pin, Radius: 1~16 
+Return:      Implementation status
+               true: Executed successfully
+               false: Execution failure
+Others:      None
 *************************************************/
 bool BMV56T123::playVoice(uint8_t voice_number)
 {
@@ -137,12 +142,14 @@ bool BMV56T123::playVoice(uint8_t voice_number)
 		return false;
 	}	
 }
+
 /*************************************************
-Description:Turn off the LED if not brighting;
-Parameters:
-	led_number:Number of 16 LEDs on the board
-Return: 
-Others: 
+Description: Turn off the LED if not brighting;
+Parameters:  led_number: LED serial number, Radius: 1~16 
+Return:      Implementation status
+               true: Executed successfully
+               false: Execution failure
+Others:      None 
 *************************************************/
 bool BMV56T123::openLED(uint8_t led_number)
 {
@@ -161,12 +168,14 @@ bool BMV56T123::openLED(uint8_t led_number)
 		return false;
 	}
 }
+
 /*************************************************
-Description:Turn off the LED if brighting;
-Parameters:
-	led_number:Number of 16 LEDs on the board
-Return: 
-Others:  
+Description: Turn off the LED if brighting;
+Parameters:  led_number: LED serial number, Radius: 1~16 
+Return:      Implementation status
+               true: Executed successfully
+               false: Execution failure
+Others:      None  
 *************************************************/
 bool BMV56T123::closeLED(uint8_t led_number)
 {
@@ -185,11 +194,20 @@ bool BMV56T123::closeLED(uint8_t led_number)
 		return false;
 	}
 }
+
 /*************************************************
-Description:get touch key press.
-Parameters:
-Return:  16 keys at each bit.(half word)
-Others:  
+Description: get touch key press.
+Parameters:  void
+Return:      key_value: Corresponding to the status of 1~16 touch detection pins
+                   bit[0] : Touch detects the status of pin 1
+                           bit[0] = 0:  No press
+                           bit[0] = 1:  Hold down
+                   .......
+                   .......
+                   bit[15] : Touch detects the status of pin 16
+                           bit[15] = 0:  No press
+                           bit[15] = 1:  Hold down                   
+Others:      None  
 *************************************************/
 uint16_t BMV56T123::getTouchValue(void)
 {
@@ -222,13 +240,14 @@ uint16_t BMV56T123::getTouchValue(void)
 		return false;
 	}
 }
+
 /********************************************************************
-Description:get intterupt pin status。
-Parameters:
-Return:
-		0: not intterupt occurs
-		1: intterupt occurs   
-Others:      
+Description: get intterupt pin status。
+Parameters:  void
+Return:      INT Pin level
+		             0: not intterupt occurs
+		             1: intterupt occurs   
+Others:      None      
 ********************************************************************/
 uint8_t BMV56T123::getINT(void)
 {
@@ -241,13 +260,12 @@ uint8_t BMV56T123::getINT(void)
 		return 1;
 	}
 }
+
 /********************************************************************
 Description: UART writeData
-Parameters:      
-            wBuf: Used to store received data
-            wLen: Length of data to be written
-Return:      none      
-Others:      
+Parameters:  wBuf: Used to store received data
+Return:      void      
+Others:      None
 ********************************************************************/
 void BMV56T123::writeBytes(uint8_t wBuf[])
 {
@@ -265,16 +283,19 @@ void BMV56T123::writeBytes(uint8_t wBuf[])
 	for(uint8_t i = 0; i < 4; i++)
 	{
 		_softSerial->write(buffer[i]);
-	    //Serial.print(buffer[i], HEX);
-	    //Serial.print(' ');
 	}
-	//Serial.println();
 }
+
 /********************************************************************
 Description: Read data from the module through UART communication
-Parameters:  rbuf : Store read data   
-Return:      true or false 
-Others:      
+Parameters:  
+             rbuf[]:Variables for storing Data to be obtained
+             rlen:Length of data to be obtained  
+             waitTime: Time OUT
+Return:      Implementation status
+               true: Executed successfully
+               false: Execution failure
+Others:      None
 *********************************************************************/
 bool BMV56T123::readBytes(uint8_t rbuf[],uint8_t rlen,uint8_t waitTime)
 {
@@ -293,9 +314,6 @@ bool BMV56T123::readBytes(uint8_t rbuf[],uint8_t rlen,uint8_t waitTime)
 	      delayCnt++;
 	 }
 	 rbuf[i] = _softSerial->read();
-	 //Serial.print(rbuf[i], HEX);
-	 //Serial.print(' ');
   }
-  //Serial.println();
   return true;
 }
